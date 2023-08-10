@@ -1,0 +1,133 @@
+/* Reset some default styles */
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+header {
+    background-color: aquamarine;
+    color: rgb(0 0 0);
+    text-align: center;
+    padding: 20px 0;
+}
+
+nav {
+    background-color: rgb(0 0 0);
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 100;
+    margin-top: -16px;
+    padding: 1px 0;
+    top: 10px;
+    margin-bottom: 21px;
+}
+.nav-list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    width: 100%; /* Added to make the nav buttons take full width */
+    margin: 0; /* Remove default margin */
+}
+
+.nav-item {
+    flex: 1; /* Distribute available space equally */
+    text-align: center; /* Center the text */
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    cursor: pointer;
+    padding: 10px 0; /* Added for spacing */
+}
+
+.nav-item:hover {
+    color: #F8BD00;
+}
+
+/* Add hover underline effect */
+.nav-item::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background-color: #F8BD00;
+    transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #17a2b8;
+    color: white;
+}
+
+ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px 0;
+}
+
+li {
+    background-color: #00aac5;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+li img {
+    width: 100%;
+    height: auto;
+}
+
+li h3 {
+    margin: 10px 0;
+}
+
+a {
+    color: #1877F2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Add glass morphism effect */
+.glass-morphism {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+td img {
+    border-radius: 25px;
+    overflow-clip-margin: padding-box;
+    overflow: auto;
+    width: 16%;
+    height: auto;
+}
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}

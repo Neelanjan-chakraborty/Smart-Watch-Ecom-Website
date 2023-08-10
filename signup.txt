@@ -1,0 +1,62 @@
+<?php
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Database connection
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "ecommerce_db";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Prepare and bind the SQL statement
+    $stmt = $conn->prepare("INSERT INTO wrist_watch_products (title, description, category, price_mrp, price_list, thumbnail_image, product_images, reviews, ratings, colour_options, materials, display, connectivity, battery_life, health_features, water_resistance, compatibility, additional_features, warranty, return_policy, customer_reviews, size_and_dimensions, packaging, shipping_delivery) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+    $stmt->bind_param("ssssssssiisssssssssssssss", $title, $description, $category, $price_mrp, $price_list, $thumbnail_image, $product_images, $reviews, $ratings, $colour_options, $materials, $display, $connectivity, $battery_life, $health_features, $water_resistance, $compatibility, $additional_features, $warranty, $return_policy, $customer_reviews, $size_and_dimensions, $packaging, $shipping_delivery);
+
+    // Get values from the form
+    $title = $_POST["title"];
+    $description = $_POST["description"];
+    $category = $_POST["category"];
+    $price_mrp = $_POST["price_mrp"];
+    $price_list = $_POST["price_list"];
+    $thumbnail_image = $_POST["thumbnail_image"];
+    $product_images = $_POST["product_images"];
+    $reviews = $_POST["reviews"];
+    $ratings = $_POST["ratings"];
+    $colour_options = $_POST["colour_options"];
+    $materials = $_POST["materials"];
+    $display = $_POST["display"];
+    $connectivity = $_POST["connectivity"];
+    $battery_life = $_POST["battery_life"];
+    $health_features = $_POST["health_features"];
+    $water_resistance = $_POST["water_resistance"];
+    $compatibility = $_POST["compatibility"];
+    $additional_features = $_POST["additional_features"];
+    $warranty = $_POST["warranty"];
+    $return_policy = $_POST["return_policy"];
+    $customer_reviews = $_POST["customer_reviews"];
+    $size_and_dimensions = $_POST["size_and_dimensions"];
+    $packaging = $_POST["packaging"];
+    $shipping_delivery = $_POST["shipping_delivery"];
+
+    // Execute the SQL statement
+    if ($stmt->execute()) {
+        echo "Product uploaded successfully!";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    // Close the statement and connection
+    $stmt->close();
+    $conn->close();
+}
+
+?>

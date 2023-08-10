@@ -1,0 +1,64 @@
+/* Apply glass-like effect */
+body {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* Styling for cart and wishlist sections */
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item .thumbnail {
+    flex: 0 0 80px;
+    margin-right: 10px;
+}
+
+.cart-item .thumbnail img {
+    max-width: 100%;
+    border-radius: 6px;
+}
+
+.cart-item .details {
+    flex: 1;
+}
+
+/* Styling for cart totals and coupon section */
+.cart-totals {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cart-totals input[type="text"],
+.cart-totals button {
+    margin: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    color: #333;
+    cursor: pointer;
+}
+
+.cart-totals button:hover {
+    background-color: #ddd;
+}
+
+/* Overall page styling */
+h1 {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(to right, #00c3ff, #ffff1c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 0;
+}

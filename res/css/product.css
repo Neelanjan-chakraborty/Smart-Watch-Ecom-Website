@@ -1,0 +1,279 @@
+/* Global Styles */
+body {
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    background: #7fffd400;
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgb(255 0 0 / 0%);
+    padding: 20px;
+    margin: 20px;
+}
+
+.card {
+    background: linear-gradient(90deg, #ffe38f96, #feecb3);
+    backdrop-filter: blur(10px);
+    border-radius: 20px !important;
+    box-shadow: -5px 0px 9px 0px rgb(146 217 227), 4px 1px 8px rgb(155 128 0);
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background: #f8bd0087;
+    color: #fff;
+    padding: 10px;
+    border-radius: calc(1.25rem - 1px) calc(1.25rem - 1px) 0 0 !important;
+}
+
+.card-header h6 {
+    margin: 0;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+
+/* Image Carousel Styles */
+.demo {
+    margin: 0 auto;
+}
+
+#lightSlider {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    height: auto;
+}
+
+#lightSlider li {
+    text-align: center;
+}
+
+#lightSlider img {
+    width: 100%;
+    height: auto;
+}
+
+/* Review Styles */
+.review {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-author {
+    font-weight: bold;
+}
+
+.review-date {
+    color: #999;
+}
+
+/* Button Styles */
+.btn-long {
+    padding-left: 35px;
+    padding-right: 35px
+}
+
+.buttons {
+    margin-top: 15px
+}
+
+.buttons .btn {
+    height: 46px
+}
+
+.buttons .cart {
+    border-color: #17a2b8;
+    color: #17a2b8;
+    background-color: #f8bd0094;
+    font-weight: bolder;
+    box-shadow: black;
+}
+
+.buttons .cart:hover {
+    background-color: #17a2b89c !important;
+    color: #f8bd00b8;
+    box-shadow: inset 0 0 12px 0px #00000069;
+}
+
+.buttons .buy {
+    color: #fff;
+    background-color: #ff7676;
+    border-color: #ff7676
+}
+
+.buttons .buy:focus,
+.buy:active {
+    color: #fff;
+    background-color: #ff7676;
+    border-color: #ff7676;
+    box-shadow: none
+}
+
+.buttons .buy:hover {
+    color: #fff;
+    background-color: #e86464;
+    border-color: #e86464
+}
+
+.buttons .wishlist {
+    background-color: #ffc10785;
+    border-color: #17a2b8;
+}
+
+.buttons .wishlist:hover {
+    background-color: #17a2b86e;
+    border-color: #f8bd00;
+    color: #f8bd00;
+    box-shadow: inset 0 0 7px #00000082;
+}
+
+.buttons .wishlist:hover i {
+    color: #f8bd00;
+    text-shadow: 0 0 10px black;
+}
+
+.buttons .wishlist i {
+    color: #17a2b8;
+}
+
+/* Color Radio Button Styles */
+.my-color label {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.my-color label input[type="radio"] {
+    display: none;
+}
+
+.my-color label span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-top: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.my-color label input[type="radio"]:checked + span {
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.red {
+    background-color: #f44336;
+}
+
+.blue {
+    background-color: #2196F3;
+}
+
+.green {
+    background-color: #4CAF50;
+}
+
+.orange {
+    background-color: #FF9800;
+}
+
+/* Store Styles */
+.store-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.comment-profile {
+    margin-left: 10px;
+}
+
+.comment-ratings {
+    color: #ffeb3b;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.followers {
+    color: #999;
+    font-size: 12px;
+}
+
+/* Similar Products Styles */
+.similar-products {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+}
+
+.similar-products .card {
+    margin-right: 10px;
+}
+
+/* Gradient Background */
+.snippet-body {
+    background: linear-gradient(90deg, #99f1ff, #ffecb2);
+    background-size: cover;
+    background-attachment: fixed;
+    color: #333;
+}
+
+/* Typography */
+h4, h6 {
+    color: #333;
+}
+
+.font-weight-bold {
+    font-weight: bold;
+}
+
+/* Add any additional styles here */
+.collapsed {
+    max-height: 50px; /* Set an initial max height for collapsed state */
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.expanded {
+    max-height: auto;
+}
+.read-more-button {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 16px;
+    background: #17a2b8ad;
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: #000;
+    margin-top: 10px;
+}
+
+.read-more-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #1f2687;
+}
+img {
+    overflow-clip-margin: content-box;
+    overflow: clip;
+    border-radius: 25px !important; 
+}

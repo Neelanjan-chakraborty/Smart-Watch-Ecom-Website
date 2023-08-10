@@ -1,0 +1,80 @@
+/* Define classes for each color */
+.black {
+  background-color: #000000;
+}
+
+.blue {
+  background-color: #0000FF;
+}
+
+.red {
+  background-color: #FF0000;
+}
+
+.purple {
+  background-color: #800080;
+}
+
+.silver {
+  background-color: #C0C0C0;
+}
+
+.gold {
+  background-color: #FFD700;
+}
+
+.white {
+  background-color: #FFFFFF;
+}
+
+.teal {
+  background-color: #008080;
+}
+
+.green {
+  background-color: #008000;
+}
+
+.brown {
+  background-color: #A52A2A;
+}
+
+.orange {
+  background-color: #FFA500;
+}
+
+.neon-blue {
+  background-color: #00FFFF;
+}
+
+.neon-cyan {
+  background-color: #00FF00;
+}
+
+.neon-green {
+  background-color: #FF00FF;
+}
+
+.neon-orange {
+  background-color: #FFA500;
+}
+
+.neon-pink {
+  background-color: #FF1493;
+}
+
+.neon-purple {
+  background-color: #800080;
+}
+
+.neon-red {
+  background-color: #FF0000;
+}
+
+.neon-yellow {
+  background-color: #FFFF00;
+}
+
+.yellow {
+  background-color: #FFFF00;
+}

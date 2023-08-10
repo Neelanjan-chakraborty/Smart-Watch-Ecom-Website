@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page</title>
+<style>
+body{
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans', sans-serif;
+  overflow: hidden; /* Prevent horizontal scrollbar due to animation */
+  position: relative;
+  background: url('res/depth_1.png') no-repeat center center fixed;
+  background-size: cover;
+}
+#parallax {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-image: url(res/depth_3.png), url(res/depth_2.png), url(res/depth_1.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-position: 50% 50%;
+}
+.animation-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.animate-gradient {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #F8BD00, #1877F2);
+  opacity: 0.2;
+  animation: floatAnimation 10s infinite linear;
+}
+
+@keyframes floatAnimation {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(50px, 50px);
+  }
+}
+
+  .login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  .login-panel {
+    width: 90%;
+    max-width: 500px;
+    background: linear-gradient(0deg, #f8bd0070 0%, #2f50ff6e 100%), linear-gradient(321deg, rgba(47, 80, 255, 0.20) 0%, rgba(251, 206, 73, 0.18) 100%);
+    box-shadow: -8px 4px 16px 10px rgba(0, 0, 0, 0.24);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 0.50px rgba(255, 255, 255, 0.60) solid;
+    backdrop-filter: blur(53px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .login-header {
+    padding: 24px;
+    text-align: center;
+    color: white;
+  }
+
+  .login-title {
+    font-size: 36px;
+    font-weight: 600;
+  }
+
+  .welcome-msg {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 8px;
+  }
+
+  .login-form {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .textbox {
+    width: 92%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+    outline: none;
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .textbox::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    opacity: 0.6;
+  }
+
+  .textbox:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .login-button {
+    background:linear-gradient(91deg, #2f50ff52 0%, #fcce4866 100%);
+    border-radius: 12px;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 14px 0;
+    text-align: center;
+    cursor: pointer;
+    box-shadow:-8px 4px 16px 0px rgba(0, 0, 0, 0.24);
+    border:none;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .login-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .forgot-password {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .other-logins {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .or-divider {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: #4D4D4D;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 16px;
+  }
+
+  .divider-line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #4D4D4D;
+  }
+
+  .social-logins {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 16px;
+  }
+
+  .social-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .social-icon:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .social-icon img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .signup-link {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+.remember-me{
+	color:white;
+}
+.login-container {
+  /* Existing styles for the login container */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* Add any additional styles */
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: -35px; /* Adjust spacing if needed */
+}
+
+.logo {
+  width: 350px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+  .footer-link {
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div id="parallax">
+  <div class="login-container">
+    <div class="login-panel">
+  <div class="logo-container">
+    <img src="res/logo.png" alt="Logo" class="logo">
+  </div>
+      <div class="login-header">
+        <div class="login-title">Login</div>
+        <div class="welcome-msg">Glad you’re back.!</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+<script src="login.js"></script>
+<script src="parralax.js"></script>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Product Description Page</title>
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
+    <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
+        <link rel="stylesheet" href="res/css/product.css">
+
+    <style>
+        /* Your custom styles here */
+    </style>
+</head>
+<body oncontextmenu='return false' class='snippet-body'>
+    <?php 
+    session_start();
+    require_once "db_connection.php"; // Replace with your database connection code
+    
+    if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+        header("Location: login.html");
+        exit;
+    }
+    
+    $product_id = $_GET["product_id"];
+    
+    // Fetch product details from the database
+    $sql = "SELECT * FROM wrist_watch_products WHERE product_id = $product_id";
+    
+    $result = $conn->query($sql);
+    
+    if ($result->num_rows > 0) {
+        $product = $result->fetch_assoc();
+    } else {
+        header("Location: index.php");
+        exit;
+    }
+    ?>
+
+    <?php include("header.php"); ?>
+    
+    <div class="container-fluid mt-2 mb-3">
+        <div class="row no-gutters">
+            <div class="col-md-5 pr-2">
+                <!-- Image Carousel and Reviews Section -->
+                <div class="card">
+                    <div class="demo">
+                        <ul id="lightSlider">
+                            <!-- Loop through product images -->
+                            <?php
+                            $images = explode(",", $product["thumbnail_image"]);
+                            foreach ($images as $image) {
+                                echo '<li data-thumb="' . $image . '"><img src="' . $image . '"></li>';
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card mt-2">
+                    <h6>Reviews</h6>
+                    <!-- Loop through reviews -->
+                    <?php
+                    $reviews = explode("\n", $product["customer_reviews"]);
+                    foreach ($reviews as $review) {
+                        echo '<div class="d-flex flex-row align-items-center review">';
+                        echo '<div class="review-header">';
+                        echo '<div class="review-author">' . $review . '</div>';
+                        echo '<div class="review-date"> 12 May</div>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                    ?>
+                    <div>
+                    <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div> <span class="ml-1 font-weight-bold">4.6</span>
+                </div>
+                <hr>
+                <div class="badges"> <span class="badge bg-dark ">All (230)</span> <span class="badge bg-dark "> <i class="fa fa-image"></i> 23 </span> <span class="badge bg-dark "> <i class="fa fa-comments-o"></i> 23 </span> <span class="badge bg-warning"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <span class="ml-1">2,123</span> </span> </div>
+                <hr>
+                <div>
+                    <div>
+                        <div> <img src="https://i.imgur.com/o5uMfKo.jpg" class="rounded-circle profile-image">
+                            <div >
+                                <div class="comment-ratings"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div> <span class="username">Neelanjan Chakraborty</span>
+                            </div>
+                        </div>
+                        <div class="date"> <span class="text-muted">2 May</span> </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <div > <img src="https://i.imgur.com/tmdHXOY.jpg" class="rounded-circle profile-image">
+                            <div class="d-flex flex-column ml-1 comment-profile">
+                                <div class="comment-ratings"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div> <span class="username">Romit Swain</span>
+                            </div>
+                        </div>
+                        <div class="date"> <span class="text-muted">12 May</span> </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="col-md-7">
+                <div class="card">
+                    <!-- Product Details -->
+                    <div class="d-flex flex-row align-items-center p-ratings">
+                        <!-- Display star ratings -->
+                        <?php
+                        $rating = $product["ratings"]; // Use actual product ratings from the database
+                        for ($i = 1; $i <= 5; $i++) {
+                            if ($i <= $rating) {
+                                echo '<i class="fa fa-star"></i>';
+                            } else {
+                                echo '<i class="fa fa-star-o"></i>';
+                            }
+                        }
+                        ?>
+                        <span class="ml-1"><?php echo $product["ratings"]; ?></span>
+                    </div>
+                    <div class="about">
+                        <span class="font-weight-bold"><?php echo $product["title"]; ?></span>
+                        <h4 class="font-weight-bold">$<?php echo $product["price_list"]; ?></h4>
+                    </div>
+                    <div class="buttons">
+                        <a href="cart.php?product_id=<?php echo $product_id; ?>" class="btn btn-outline-warning btn-long cart">Add to Cart</a>
+                        <button class="btn btn-light wishlist"><i class="fa fa-heart"></i></button>
+                    </div>
+                    <hr>
+                    <div class="product-description">
+                        <!-- Display product details -->
+                        <div><span class="font-weight-bold">Color:</span><span><?php echo $product["colour_options"]; ?></span></div>
+                        <!-- Add radio buttons for color options -->
+                        <div class="my-color">
+                            <?php
+                            $colorOptions = explode(",", $product["colour_options"]);
+                            foreach ($colorOptions as $colorOption) {
+                                echo '<label class="radio">';
+                                echo '<input type="radio" name="color" value="' . $colorOption . '">';
+                                echo '<span class="' . strtolower($colorOption) . '"></span>';
+                                echo '</label>';
+                            }
+                            ?>
+                        </div>
+                        <div class="d-flex flex-row align-items-center">
+                            <i class="fa fa-calendar-check-o"></i>
+                            <span class="ml-1">Delivery from <?php echo $product["shipping_delivery"]; ?></span>
+                        </div>
+                        <div class="mt-2">
+                            <span class="font-weight-bold">Description</span>
+                            <div class="product-description">
+                                    <p class="collapsed">
+                                        <?php echo $product["description"]; ?>
+                                    </p>
+                                <button class="read-more-button">Read More</button>
+                            </div>
+
+                        </div>
+                        <div class="card mt-2">
+    <div class="card-header">
+        <h6>Specifications</h6>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Materials</th>
+                    <td><?php echo $product["materials"]; ?></td>
+                </tr>
+                <tr>
+                    <th>Display</th>
+                    <td><?php echo $product["display"]; ?></td>
+                </tr>
+                <tr>
+                    <th>Connectivity</th>
+                    <td><?php echo $product["connectivity"]; ?></td>
+                </tr>
+                <tr>
+                    <th>Battery Life</th>
+                    <td><?php echo $product["battery_life"]; ?></td>
+                </tr>
+                <tr>
+                    <th>Health Features</th>
+                    <td><?php echo $product["health_features"]; ?></td>
+                </tr>
+                <tr>
+                    <th>Water Resistance</th>
+                    <td><?php echo $product["water_resistance"]; ?></td>
+                </tr>
+                <tr>
+                    <th>Compatibility</th>
+                    <td><?php echo $product["compatibility"]; ?></td>
+                </tr>
+                <tr>
+                    <th>Additional Features</th>
+                    <td><?php echo $product["additional_features"]; ?></td>
+                </tr>
+                <tr>
+                    <th>Size and Dimensions</th>
+                    <td><?php echo $product["size_and_dimensions"]; ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+                        
+                    </div>
+                </div>
+                <div class="card mt-2">
+                    <span>Similar items:</span>
+                    <div class="similar-products mt-2 d-flex flex-row">
+    <?php
+    // Fetch and display similar products
+    $similarProductsSql = "SELECT * FROM wrist_watch_products WHERE product_id != $product_id LIMIT 5";
+    $similarProductsResult = $conn->query($similarProductsSql);
+    while ($similarProduct = $similarProductsResult->fetch_assoc()) {
+        echo '<div class="card border p-1" style="width: 9rem;margin-right: 3px;">';
+        echo '<a href="products.php?product_id=' . $similarProduct["product_id"] . '">'; // Add link to product page
+        echo '<img src="' . $similarProduct["thumbnail_image"] . '" class="card-img-top" alt="'.$similarProduct["title"].'">';;
+        echo '</a>';
+        echo '<div class="card-body">';
+        echo '<h6 class="card-title">' . $similarProduct["title"] . '</h6>';
+        echo '</div>';
+        echo '</div>';
+    }
+    ?>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <?php include("footer.php"); ?>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+    <script src='https://sachinchoolur.github.io/lightslider/dist/js/lightslider.js'></script>
+    <script>
+        // Your JavaScript code here
+    </script>
+    <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js'></script>
+    <script type='text/javascript' src='res/js/readmore.js'></script>
+    <script type='text/javascript' src=''></script>
+    <script type='text/Javascript'></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Product Upload</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  form {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Product Upload Dashboard</h1>
+<form action="upload_product.php" method="POST">
+  <label for="title">Title:</label>
+  <input type="text" id="title" name="title" required>
+
+  <label for="description">Description:</label>
+  <textarea id="description" name="description" rows="4" required></textarea>
+
+  <label for="category">Category:</label>
+  <input type="text" id="category" name="category" required>
+
+  <label for="price_mrp">Price (MRP):</label>
+  <input type="number" id="price_mrp" name="price_mrp" required>
+
+  <label for="price_list">Price (List Price):</label>
+  <input type="number" id="price_list" name="price_list" required>
+
+  <label for="thumbnail">Thumbnail Image URL:</label>
+  <input type="text" id="thumbnail" name="thumbnail_image" required>
+
+  <label for="images">Product Images (Comma-separated URLs):</label>
+  <input type="text" id="images" name="product_images" required>
+
+  <label for="reviews">Reviews:</label>
+  <textarea id="reviews" name="reviews" rows="4"></textarea>
+
+  <label for="ratings">Ratings:</label>
+  <input type="number" id="ratings" name="ratings" min="1" max="5">
+
+  <label for="variants">Available Variants (Comma-separated):</label>
+  <input type="text" id="variants" name="colour_options">
+
+  <label for="materials">Materials:</label>
+  <input type="text" id="materials" name="materials">
+
+  <label for="display">Display:</label>
+  <input type="text" id="display" name="display">
+
+  <label for="connectivity">Connectivity:</label>
+  <input type="text" id="connectivity" name="connectivity">
+
+  <label for="battery_life">Battery Life:</label>
+  <input type="text" id="battery_life" name="battery_life">
+
+  <label for="health_fitness">Health and Fitness Features:</label>
+  <input type="text" id="health_fitness" name="health_features">
+
+  <label for="water_resistance">Water Resistance:</label>
+  <input type="text" id="water_resistance" name="water_resistance">
+
+  <label for="compatibility">Compatibility:</label>
+  <input type="text" id="compatibility" name="compatibility">
+
+  <label for="additional_features">Additional Features:</label>
+  <input type="text" id="additional_features" name="additional_features">
+
+  <label for="warranty_return">Warranty and Return Policy:</label>
+  <input type="text" id="warranty_return" name="warranty_return">
+
+  <label for="customer_reviews">Customer Reviews:</label>
+  <textarea id="customer_reviews" name="customer_reviews" rows="4"></textarea>
+
+  <label for="size_dimensions">Size and Dimensions:</label>
+  <input type="text" id="size_dimensions" name="size_and_dimensions">
+
+  <label for="packaging">Packaging:</label>
+  <input type="text" id="packaging" name="packaging">
+
+  <label for="shipping_delivery">Shipping and Delivery:</label>
+  <input type="text" id="shipping_delivery" name="shipping_delivery">
+
+  <button type="submit">Upload Product</button>
+</form>
+
+  </div>
+   <div id="responseMessage">Product Uploaded!</div>
+</body>
+    <script>
+        const productForm = document.getElementById("productForm");
+        const responseMessage = document.getElementById("responseMessage");
+
+        productForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(productForm);
+
+            fetch("upload_product.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                responseMessage.textContent = data;
+                productForm.reset();
+            })
+            .catch(error => {
+                responseMessage.textContent = "An error occurred: " + error;
+            });
+        });
+    </script>
+</html>
