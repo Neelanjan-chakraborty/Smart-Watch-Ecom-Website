@@ -68,6 +68,6 @@ If you'd like to contribute to this project, please follow these steps:
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is Made as a Interview Challenge for Hyscaler.
 
 Feel free to reach out if you have any questions or suggestions. Happy coding!
