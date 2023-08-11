@@ -114,6 +114,20 @@
         z-index: 100;
       }
     }
+    .about-dev-btn {
+    color: #333;
+    text-decoration: none;
+    padding: 0px 7px;
+    background-color: #f2f2f257;
+    border: 1px solid #000;
+    border-radius: 4px;
+    margin-left: 0px;
+    font-weight: bold;
+}
+
+.about-dev-btn:hover {
+    background-color: #ddd; /* Button background color on hover */
+}
   </style>
 </head>
 <body>
@@ -129,6 +143,8 @@
       } else {
         echo '<a href="user.php"><span class="icons"><i class="fas fa-user"></i></span> ' . $_SESSION["first_name"] . ' ' . $_SESSION["last_name"] . '</a>';
         echo '<a href="logout.php"><span class="icons"><i class="fas fa-door-open"></i></span> Log Out</a>';
+            // Adding "About the Developer" button with icon
+        echo '<a href="https://www.neelanjanchakraborty.tech/" class="about-dev-btn"><span class="icons"><i class="fas fa-info-circle"></i></span> About the Developer</a>';
       }
       ?>
       <a href="cart.php"><span class="icons"><i class="fas fa-shopping-cart"></i></span> Cart</a>
@@ -137,13 +153,12 @@
       <input type="text" class="search-input" placeholder="Search products...">
     </div>
   </header>
-</body>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.querySelector(".search-input");
     const productCards = document.querySelectorAll(".product-card");
     const heroSection = document.querySelector("#hero-banner");
-    const sem = document.querySelector(".category-image");
+    const sem = document.querySelector(".full-width-image");
 
     searchInput.addEventListener("input", function () {
         const searchTerm = searchInput.value.toLowerCase();
@@ -154,9 +169,14 @@
 
         productCards.forEach(function (card) {
             const productTitle = card.querySelector(".product-title").textContent.toLowerCase();
-            if (productTitle.includes(searchTerm)) {
+            if (productTitle.includes(searchTerm))
+             {
                 card.style.display = "block";
-            } else {
+                sem.style.display = "none";
+
+            } 
+            else 
+            {
                 card.style.display = "none";
             }
         });
@@ -164,4 +184,6 @@
 });
 
 </script>
+</body>
+
 </html>

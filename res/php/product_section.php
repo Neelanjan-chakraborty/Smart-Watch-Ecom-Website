@@ -50,6 +50,7 @@ echo '</a>';
         ?>
 
     </section>
+    <style type="res/css/styles2.css"></style>
 
 <style>
 .product-info li {
