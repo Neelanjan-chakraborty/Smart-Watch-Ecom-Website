@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,9 +10,43 @@
     <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
         <link rel="stylesheet" href="res/css/product.css">
         <link rel="stylesheet" href="res/css/colours.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <style>
+.review-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.review-author {
+    font-size: 14px;
+    color: #333;
+}
+
+.review-date {
+    font-size: 12px;
+    color: #777;
+}
+
+.review-text {
+    margin-bottom: 10px;
+}
+
+.star-ratings {
+    color: #ffc107; /* Star color (yellow) */
+    font-size: 16px;
+}
 .sketchfab-embed-wrapper {
     position: relative;
     padding-bottom: 130.25%;
@@ -38,6 +73,115 @@
     margin-top: 10px;
     cursor: pointer;
     border-color: #7fffd4b5;
+}
+
+.average-rating {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.average-rating p {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.average-rating ul {
+    list-style: none;
+    padding: 0;
+}
+
+.average-rating li {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+/* Modal Styles */
+.modal-dialog {
+    max-width: 500px;
+}
+
+.modal-content {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: none;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    border-top: none;
+    padding: 10px 20px;
+}
+
+/* Review Form Styles */
+#reviewForm {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 8px 12px;
+}
+
+/* Rating Input Styles (Assuming you're using radio buttons) */
+.rating-label {
+    margin-right: 10px;
+}
+
+/* Submit Button Styles */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-close {
+    color: #6c757d;
+}
+
+/* Overlay Styles */
+.modal-backdrop {
+    opacity: 0.5;
+    background-color: #000;
+}
+.modal-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
 }
     </style>
 </head>
@@ -105,9 +249,51 @@
     <h6>Reviews</h6>
     <!-- Loop through reviews and display them dynamically -->
     <div id="reviews-container">
+        
         <!-- Reviews will be dynamically added here -->
     </div>
-    <button id="add-review-btn" class="btn btn-primary mt-2">Add Review</button>
+
+<button id="add-review-btn" class="btn btn-primary mt-2">Add Review</button>
+</div>
+
+<!-- Modal for Review Submission
+<div class="modal" id="reviewModal"  data-bs-centered="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">Add Review</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>This feature is a work in progress.</p>
+                <p>Please provide your review and ratings:</p>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="reviewText" class="form-label">Review Text</label>
+                        <textarea id="reviewText" class="form-control" rows="4" placeholder="Your review text..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ratings</label><br>
+                        <label class="rating-label">
+                            <input type="radio" name="batteryRating" value="5"> 5 Stars
+                        </label>
+                        <label class="rating-label">
+                            <input type="radio" name="batteryRating" value="4"> 4 Stars
+                        </label>
+                        -- Add similar radio buttons for other ratings --
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+ -->
+<div class="card mt-2">
+    <h6>Ratings</h6>
+    <!-- Calculate Average ratings and display them dynamically -->
+    <div id="average-rating"></div>
+    
 </div>
             </div>
             <div class="col-md-7">
@@ -137,12 +323,9 @@
                      <?php
                     echo '<h5 class="original-price" style="color: red;">';
                     echo ' ₹<s>' . $original_price. '</s></h5>  ';
-                    echo '<h6 class="original-price" style="
-    color: #ffc107;
-    text-shadow: 0 0 4px black;
-    font-size: xxx-large;">';
+                    echo '<h6 class="original-price" style="color: #ffc107;text-shadow: 0 0 4px black;font-size: xxx-large;">';
                     echo $discount_percent . '% OFF </h6>'; 
-?>
+                    ?>
                     </div>
                     <div class="buttons">
                         <a href="cart.php?product_id=<?php echo $product_id; ?>" class="btn btn-outline-warning btn-long cart">Add to Cart</a>
@@ -280,67 +463,151 @@
     });
     </script>
     <script>
+
+    const addReviewBtn = document.getElementById("add-review-btn");
+
 document.addEventListener("DOMContentLoaded", function () {
     const reviewsContainer = document.getElementById("reviews-container");
     const addReviewBtn = document.getElementById("add-review-btn");
     const readMoreBtn = document.getElementById("read-more-btn");
 
+    // Fetch and display reviews when the page loads
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('product_id');
+    fetchReviews(productId);
+    
+
     let displayedReviews = 3; // Number of reviews to initially display
     const reviewsToShow = 3;  // Number of additional reviews to show on each "Read More" click
 
+
     // Function to fetch and display reviews
-    function fetchReviews(product_id) {
-        fetch(`res/php/fetch_reviews.php?product_id=${product_id}`)
-            .then(response => response.json())
-            .then(data => {
+   function fetchReviews(product_id) {
+    fetch(`res/php/fetch_reviews.php?product_id=${product_id}`)
+        .then(response => response.json())
+        .then(data => {
+            const averageRatingDiv = document.getElementById("average-rating");
                 reviewsContainer.innerHTML = '';
 
                 // Display limited number of reviews
-                data.reviews.slice(0, displayedReviews).forEach(review => {
-                    const reviewDiv = document.createElement("div");
-                    reviewDiv.className = "review-item";
-                    reviewDiv.innerHTML = `
+               data.reviews.slice(0, displayedReviews).forEach(review => {
+                const reviewDiv = document.createElement("div");
+                reviewDiv.className = "review-item";
+                reviewDiv.innerHTML = `
                         <div class="review-header">
                             <div class="review-author">${review.first_name} ${review.last_name}</div>
                             <div class="review-date">${review.timestamp}</div>
                         </div>
                         <div class="review-text">${review.review_text}</div>
-                        <div class="review-ratings">
-                            Ratings: Battery ${ratings.battery_life}, Display ${ratings.display_quality}, Look ${ratings.look_and_feel},
-                            Product ${ratings.product_quality}, Value ${ratings.value_for_money}, Ease ${ratings.ease_for_use}
+                        <div class="star-ratings">
+                            ${generateStarRating(review.rating)} <!-- Function to generate star icons -->
                         </div>
                     `;
-                    reviewsContainer.appendChild(reviewDiv);
+                reviewsContainer.appendChild(reviewDiv);
                 });
 
-                // Check if there are more reviews to show
-                if (displayedReviews < data.reviews.length) {
-                    readMoreBtn.style.display = "block";
-                } else {
-                    readMoreBtn.style.display = "none";
-                }
+                // Calculate average ratings for different categories
+            const averageRatings = calculateAverageRatings(data.ratings);
+            displayAverageRatings(averageRatings, averageRatingDiv);
             });
     }
 
     // Fetch and display reviews when the page loads
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('product_id');
-    fetchReviews(productId);
 
-    // Event listener for "Read More" button
-    readMoreBtn.addEventListener("click", function () {
-        displayedReviews += reviewsToShow;
-        fetchReviews(productId);
-    });
 
     // Event listener for "Add Review" button
-    addReviewBtn.addEventListener("click", function () {
+        addReviewBtn.addEventListener("click", function () {
         // Implement code to display the review submission form (modal or other UI)
         console.log("button pressed");
     });
+    function generateStarRating(rating) {
+    const maxRating = 5;
+    const filledStars = '<i class="fas fa-star"></i>';
+    const emptyStars = '<i class="far fa-star"></i>';
+    const ratingHTML = [];
+
+    for (let i = 1; i <= maxRating; i++) {
+        if (i <= rating) {
+            ratingHTML.push(filledStars);
+        } else {
+            ratingHTML.push(emptyStars);
+        }
+    }
+
+    return ratingHTML.join('');
+}
+function calculateAverageRatings(ratings) {
+    const averageRatings = {
+        battery_life: 0,
+        display_quality: 0,
+        look_and_feel: 0,
+        product_quality: 0,
+        value_for_money: 0,
+        ease_for_use: 0
+    };
+    
+    const totalRatings = ratings.length;
+    if (totalRatings === 0) {
+        return averageRatings;
+    }
+
+    ratings.forEach(rating => {
+        averageRatings.battery_life += rating.battery_life;
+        averageRatings.display_quality += rating.display_quality;
+        averageRatings.look_and_feel += rating.look_and_feel;
+        averageRatings.product_quality += rating.product_quality;
+        averageRatings.value_for_money += rating.value_for_money;
+        averageRatings.ease_for_use += rating.ease_for_use;
+    });
+
+    for (const category in averageRatings) {
+        averageRatings[category] /= totalRatings;
+    }
+
+    return averageRatings;
+}
+
+function displayAverageRatings(averageRatings, averageRatingDiv) {
+    // Display average ratings content
+    averageRatingDiv.innerHTML = `
+        <div class="average-rating">
+            <p>Average Ratings:</p>
+            <ul>
+                <li>Battery Life: ${averageRatings.battery_life.toFixed(1)}</li>
+                <li>Display Quality: ${averageRatings.display_quality.toFixed(1)}</li>
+                <li>Look and Feel: ${averageRatings.look_and_feel.toFixed(1)}</li>
+                <li>Product Quality: ${averageRatings.product_quality.toFixed(1)}</li>
+                <li>Value for Money: ${averageRatings.value_for_money.toFixed(1)}</li>
+                <li>Ease for Use: ${averageRatings.ease_for_use.toFixed(1)}</li>
+            </ul>
+        </div>
+    `;
+}
 });
 
+</script>
+<script>
+    //document.addEventListener("DOMContentLoaded", function () {
+       // const addReviewBtn = document.getElementById("add-review-btn");
+       // const reviewModal = new bootstrap.Modal(document.getElementById("reviewModal"));
+       // const reviewForm = document.getElementById("reviewForm");
 
+        // Event listener for "Add Review" button
+        //addReviewBtn.addEventListener("click", function () {
+            reviewModal.show();
+        //});
+
+        // Event listener for review form submission
+        //reviewForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Simulate submission (work in progress)
+            //console.log("Review form submitted (work in progress)");
+            //setTimeout(function () {
+                reviewModal.hide();
+           // }, 1000); // Hide the modal after a short delay (simulating submission)
+        //});
+    //});
 </script>
 </body>
 </html>

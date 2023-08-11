@@ -47,24 +47,42 @@
         .user-card a:hover {
             color: #f1c40f;
         }
+.about-dev-btn {
+    color: #333;
+    text-decoration: none;
+    padding: 0px 7px;
+    background-color: #f2f2f257;
+    border: 1px solid #000;
+    border-radius: 4px;
+    margin-left: 0px;
+    font-weight: bold;
+}
+
+.about-dev-btn:hover {
+    background-color: #ddd; /* Button background color on hover */
+}
     </style>
     <header>
-        <div class="nav-bar">
+    <div class="header">
         <a href="index.php" class="logo">
             <img src="res/logo.png" alt="Logo" width="80" height="80">
             WatchKart
         </a>
-        <div class="user-card">
-            <?php
-            if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-                echo '<a href="login.html"><span class="icons"><i class="fas fa-sign-in-alt"></i></span> Log In</a>';
-            } else {
-                echo '<a href="user.php"><span class="icons"><i class="fas fa-user"></i></span> '. $_SESSION["first_name"] .' ' . $_SESSION["last_name"].'</a>';
-                echo '<a href="logout.php"><span class="icons"><i class="fas fa-door-open"></i></span> Log Out</a>';
-            }
-            ?>
-            <a href="cart.php"><span class="icons"><i class="fas fa-shopping-cart"></i></span> Cart</a>
+        <div class="nav-bar">
+            <div class="user-card">
+                <?php
+                if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+                    echo '<a href="login.html"><span class="icons"><i class="fas fa-sign-in-alt"></i></span> Log In</a>';
+                } else {
+                    echo '<a href="user.php"><span class="icons"><i class="fas fa-user"></i></span> '. $_SESSION["first_name"] .' ' . $_SESSION["last_name"].'</a>';
+                    echo '<a href="logout.php"><span class="icons"><i class="fas fa-door-open"></i></span> Log Out</a>';
+                }
+                echo '<a href="cart.php"><span class="icons"><i class="fas fa-shopping-cart"></i></span> Cart</a>';
+                
+                // Adding "About the Developer" button with icon
+                echo '<a href="https://www.neelanjanchakraborty.tech/" class="about-dev-btn"><span class="icons"><i class="fas fa-info-circle"></i></span> About the Developer</a>';
+                ?>
+            </div>
         </div>
-        </div>
-
-    </header>
+    </div>
+</header>
