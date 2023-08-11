@@ -5,6 +5,12 @@
 Welcome to the E-Commerce Website project repository! This project demonstrates the development of a dynamic e-commerce website for selling smart watches. The repository includes both front-end and back-end components.
 
 #### Visit The Website : https://watchjunction.000webhostapp.com/
+
+Demo Username1:user1@example.com
+Demo Password1:password1
+Demo Username2:user2@example.com
+Demo Password2:password2
+
 ## Project Screenshots
 ![App Screenshot](https://i.ibb.co/WFbHddB/Screenshot-6.png)
 
@@ -66,6 +72,11 @@ If you'd like to contribute to this project, please follow these steps:
 3. Make your changes and commit them with descriptive commit messages.
 4. Push your changes to your forked repository.
 5. Open a pull request to this repository's `main` branch.
+
+##Database Configuration
+All Sql files is stored in ecommerce_db.sql that are required to get the details from the backend 
+ Configure DB Connection.php for configuring the database .
+
 
 ## License
 
