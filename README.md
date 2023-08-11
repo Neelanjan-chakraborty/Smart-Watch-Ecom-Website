@@ -5,7 +5,7 @@
 Welcome to the E-Commerce Website project repository! This project demonstrates the development of a dynamic e-commerce website for selling smart watches. The repository includes both front-end and back-end components.
 
 #### Visit The Website : https://watchjunction.000webhostapp.com/
-
+(Note: The Website Server May be down 👎 or show Phising website warning kindly ignore)
 - Demo Username1:user1@example.com
 - Demo Password1:password1
 - Demo Username2:user2@example.com
@@ -76,6 +76,13 @@ If you'd like to contribute to this project, please follow these steps:
 ##Database Configuration
 All Sql files is stored in ecommerce_db.sql that are required to get the details from the backend 
  Configure DB Connection.php for configuring the database .
+
+##How Did I Created This Website?
+
+I did research and went through curd and javascript documentations , Designed few Php pages 
+php pages to learn scripting and react with database.Then went over to famous Ecom website like Amazon and Flipkart.
+Did a bit of Designing in Figma 
+finally Implemented The Website.
 
 
 ## License
