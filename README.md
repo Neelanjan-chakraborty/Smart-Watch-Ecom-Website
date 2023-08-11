@@ -6,10 +6,10 @@ Welcome to the E-Commerce Website project repository! This project demonstrates 
 
 #### Visit The Website : https://watchjunction.000webhostapp.com/
 
-Demo Username1:user1@example.com
-Demo Password1:password1
-Demo Username2:user2@example.com
-Demo Password2:password2
+- Demo Username1:user1@example.com
+- Demo Password1:password1
+- Demo Username2:user2@example.com
+- Demo Password2:password2
 
 ## Project Screenshots
 ![App Screenshot](https://i.ibb.co/WFbHddB/Screenshot-6.png)
