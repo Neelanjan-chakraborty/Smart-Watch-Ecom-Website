@@ -10,8 +10,7 @@
     <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
         <link rel="stylesheet" href="res/css/product.css">
         <link rel="stylesheet" href="res/css/colours.css">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css">
     <style>
 .review-item {
     border: 1px solid #ddd;
@@ -98,36 +97,6 @@
     font-size: 14px;
     margin-bottom: 5px;
 }
-/* Modal Styles */
-.modal-dialog {
-    max-width: 500px;
-}
-
-.modal-content {
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.modal-header {
-    background-color: #f8f9fa;
-    border-bottom: none;
-}
-
-.modal-title {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.modal-body {
-    padding: 20px;
-}
-
-.modal-footer {
-    border-top: none;
-    padding: 10px 20px;
-}
-
 /* Review Form Styles */
 #reviewForm {
     text-align: left;
@@ -171,19 +140,54 @@
     color: #6c757d;
 }
 
-/* Overlay Styles */
-.modal-backdrop {
-    opacity: 0.5;
-    background-color: #000;
-}
-.modal-dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-}
     </style>
+    <style>
+    /* Style for the modal body */
+    .modal-body {
+        padding: 20px;
+    }
+
+    /* Style for the form labels */
+    label {
+        font-weight: bold;
+    }
+
+    /* Style for input fields */
+    input[type="number"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    /* Style for form buttons */
+    .modal-footer button {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+    
+    /* Style for modal header */
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    /* Style for modal title */
+    .modal-title {
+        font-size: 20px;
+    }
+
+    /* Style for close button */
+    .close {
+        font-size: 24px;
+    }
+</style>
 </head>
 <body oncontextmenu='return false' class='snippet-body'>
     <?php 
@@ -211,6 +215,7 @@
     ?>
 
     <?php include("header.php"); ?>
+
     
     <div class="container-fluid mt-2 mb-3">
         <div class="row no-gutters">
@@ -289,6 +294,9 @@
     </div>
 </div>
  -->
+<!-- Popup -->
+
+
 <div class="card mt-2">
     <h6>Ratings</h6>
     <!-- Calculate Average ratings and display them dynamically -->
@@ -327,9 +335,16 @@
                     echo $discount_percent . '% OFF </h6>'; 
                     ?>
                     </div>
-                    <div class="buttons">
-                        <a href="cart.php?product_id=<?php echo $product_id; ?>" class="btn btn-outline-warning btn-long cart">Add to Cart</a>
-                        <button class="btn btn-light wishlist"><i class="fa fa-heart"></i></button>
+                    <button class="btn btn-primary" onclick="toggleCheckout()">Proceed to Checkout</button>
+
+                    <div class="card checkout-card-cell" style="display: none;">
+                        <div class="card-body">
+                        <?php include("res/php/checkout_popup.php"); ?>
+                       </div>
+                   </div>
+    <button class="btn btn-light wishlist" data-product-id="<?php echo $product['product_id']; ?>">
+        <i class="fa fa-heart"></i> Add to Wishlist
+    </button>
                     </div>
                     <hr>
                     <div class="product-description">
@@ -439,11 +454,16 @@
     <script>
         // Your JavaScript code here
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+
     <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js'></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script type='text/javascript' src='res/js/readmore.js'></script>
     <script type='text/javascript' src=''></script>
     <script type='text/Javascript'></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
     const toggleViewButton = document.getElementById('toggleViewButton');
     const sketchfabContainer = document.getElementById('sketchfabContainer');
@@ -594,20 +614,101 @@ function displayAverageRatings(averageRatings, averageRatingDiv) {
 
         // Event listener for "Add Review" button
         //addReviewBtn.addEventListener("click", function () {
-            reviewModal.show();
+           // reviewModal.show();
         //});
 
         // Event listener for review form submission
         //reviewForm.addEventListener("submit", function (event) {
-            event.preventDefault();
+          //  event.preventDefault();
 
             // Simulate submission (work in progress)
             //console.log("Review form submitted (work in progress)");
             //setTimeout(function () {
-                reviewModal.hide();
+               // reviewModal.hide();
            // }, 1000); // Hide the modal after a short delay (simulating submission)
         //});
     //});
+</script>
+<script>
+$(document).ready(function() {
+    $('.custom-checkout-popup-trigger').on('click', function() {
+        var productId = $(this).data('product-id');
+        fetchProductDetails(productId);
+    });
+
+    function fetchProductDetails(productId) {
+        var productUrl = '/smartwatch/products.php?product_id=' + productId; // Remove baseUrl
+        $.ajax({
+            url: productUrl,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                populatePopup(data);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+    function populatePopup(productData) {
+        $('#productName').text(productData.title);
+        $('#productThumbnail').attr('src', productData.thumbnail_image);
+
+        var colorSelect = $('#color');
+        colorSelect.empty();
+        var colorOptions = productData.colour_options.split(',');
+        $.each(colorOptions, function(index, color) {
+            colorSelect.append($('<option>', {
+                value: color,
+                text: color
+            }));
+        });
+
+        // Set the product ID in the hidden input field
+        $('#productId').val(productData.product_id);
+
+        $('#customCheckoutPopup').modal('show');
+    }
+});
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+function toggleCheckout() {
+    console.log("Toggle function called"); // Log a message to check if the function is called
+    
+    var checkoutCard = document.querySelector('.checkout-card-cell');
+    
+    console.log("Checkout card style:", checkoutCard.style.display); // Log the current display style
+    
+    if (checkoutCard.style.display === 'none') {
+        console.log("Display set to block"); // Log a message if changing to block
+        checkoutCard.style.display = 'block';
+    } else {
+        console.log("Display set to none"); // Log a message if changing to none
+        checkoutCard.style.display = 'none';
+    }
+}
+</script>
+<script>
+$(document).ready(function() {
+    $(".wishlist").click(function() {
+        var productId = $(this).data("product-id");
+        
+        $.ajax({
+            url: "res/php/add_to_wishlist.php", // Replace with the actual file name
+            type: "POST",
+            data: { product_id: productId },
+            success: function(response) {
+                alert("Product added to wishlist!");
+            },
+            error: function(xhr, status, error) {
+                alert("An error occurred. Please try again.");
+                console.error(error);
+            }
+        });
+    });
+});
 </script>
 </body>
 </html>

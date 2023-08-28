@@ -6,255 +6,189 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("Location: login.html");
     exit;
 }
-if (isset($_REQUEST['product_id'])) {
-    $product_id = $_REQUEST['product_id'];
-    $user_id = $_SESSION['user_id'];
 
-    // Check if product already in cart
-    $sql = "SELECT * FROM cart WHERE user_id = $user_id AND product_id = $product_id";
-    $result = mysqli_query($conn, $sql);
+$user_id = $_SESSION["user_id"]; // Replace with the way you get the logged-in user's ID
 
-    if (mysqli_num_rows($result) > 0) {
-        // Product already in cart
-        // Implement update quantity or other actions as needed
-        // For this example, let's assume we're incrementing quantity
-        $row = mysqli_fetch_assoc($result);
-        $qty = $row['quantity'] + 1;
-        $sql = "UPDATE cart SET quantity = $qty WHERE cart_id = {$row['cart_id']}";
-        mysqli_query($conn, $sql);
-    } else {
-        // Add new item to cart
-        $sql = "INSERT INTO cart (user_id, product_id, quantity) 
-                VALUES ($user_id, $product_id, 1)";
-        mysqli_query($conn, $sql);
-    }
-} 
-$user_id = $_SESSION["user_id"];
+if (isset($_GET["action"]) && isset($_GET["cart_id"])) {
+    $action = $_GET["action"];
+    $cart_id = $_GET["cart_id"];
 
-// Fetch cart details and items from the database
-// Fetch cart details and items from the database
-$cart_items = array();
-$total_price = 0;
-$mrp_total = 0;
-
-$sql = "SELECT cart.cart_id, cart.product_id, cart.quantity, wrist_watch_products.title, wrist_watch_products.price_list, wrist_watch_products.price_mrp, wrist_watch_products.thumbnail_image FROM cart
-        INNER JOIN wrist_watch_products ON cart.product_id = wrist_watch_products.product_id
-        WHERE cart.user_id = $user_id";
-
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $cart_items[] = $row;
-        $total_price += ($row["price_list"] * $row["quantity"]);
-        $mrp_total += ($row["price_mrp"] * $row["quantity"]);
+    if ($action === "remove") {
+        // Remove the product from the cart
+        $sql = "DELETE FROM shopping_cart WHERE cart_id = $cart_id AND user_id = $user_id";
+        if ($conn->query($sql)) {
+            header("Location: cart.php");
+        } else {
+            echo "Error removing product from cart: " . $conn->error;
+        }
+    } elseif ($action === "save_for_later") {
+        // Mark the product as saved for later
+        $sql = "UPDATE shopping_cart SET is_saved_for_later = TRUE WHERE cart_id = $cart_id AND user_id = $user_id";
+        if ($conn->query($sql)) {
+            header("Location: cart.php");
+        } else {
+            echo "Error marking product as saved for later: " . $conn->error;
+        }
     }
 }
 
+// Handle placing an order
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["place_order"])) {
+    // Fetch cart items for the user
+    $select_sql = "SELECT * FROM shopping_cart WHERE user_id = $user_id";
+    $result = $conn->query($select_sql);
 
-$savings = $mrp_total - $total_price;
+    while ($row = $result->fetch_assoc()) {
+        $product_id = $row["product_id"];
+        $quantity = $row["quantity"];
+        $total_price = $row["total_price"];
+        $order_date = date("Y-m-d H:i:s");
 
+        // Insert the order into the order_history table
+        $insert_sql = "INSERT INTO order_history (user_id, product_id, quantity, total_price, order_date) VALUES ($user_id, $product_id, $quantity, $total_price, '$order_date')";
+        if ($conn->query($insert_sql)) {
+            // Remove the item from the shopping_cart table
+            $delete_sql = "DELETE FROM shopping_cart WHERE cart_id = " . $row["cart_id"];
+            $conn->query($delete_sql);
+        } else {
+            echo "Error placing order: " . $conn->error;
+        }
+    }
+
+    echo "Order placed successfully";
+}
+
+// Fetch cart items for calculating totals
+$select_sql = "SELECT * FROM shopping_cart WHERE user_id = $user_id";
+$result = $conn->query($select_sql);
+
+$totalPrice = 0;
+$totalMRP = 0;
+$totalMoneySaved = 0;
+
+while ($row = $result->fetch_assoc()) {
+    if (!$row['is_saved_for_later']) { // Exclude saved for later items
+        $totalPrice += $row['total_price'];
+        $totalMRP += $row['total_mrp'];
+        $totalMoneySaved += $row['money_saved'];
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your Cart</title>
+        <link rel="stylesheet" href="res/css/cart.css">
     <style>
-body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Noto Sans', sans-serif;
-            background-color: #1877F2;
-            color: white;
-            overflow-x: hidden;
-        }
 
-        .cart-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        .cart-box {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 20px;
-            width: 400px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .confirm-box {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 20px;
-            width: 355px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .cart-header {
-            font-size: 24px;
-            font-weight: 600;
-            color: #F8BD00;
-        }
-
-        .cart-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .cart-item img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-        .cart-item a
-         {
-            width: 60px;
-            height: 60px;
-            background-color: orangered;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            padding: 5px;
-            margin: 5px;
-
-        }
-        .cart-item-details 
-        {
-            flex-grow: 1;
-            margin-left: 10px;
-        }
-
-        .item-title {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .item-price {
-            font-size: 14px;
-            color: #F8BD00;
-        }
-
-        .checkout-button {
-            background-color: #F8BD00;
-            color: #1877F2;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            text-decoration: none;
-        }
-        #confirm-button {
-            background-color: #F8BD00;
-            color: #1877F2;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .checkout-button:hover {
-            background-color: #e0a800;
-        }  
-        input[type="range" i] {
-    appearance: auto;
-    cursor: default;
-    color: -internal-light-dark(rgb(16, 16, 16), rgb(255, 255, 255));
-    padding: initial;
-    border: initial;
-    margin: 2px;
-}
-          </style>
+    </style>
 </head>
 <body>
-    <?php include("header.php"); ?>
-<div class="cart-container">
-    <div class="cart-box">
-        <div class="confirm-box">
-        <div class="cart-header">Your Cart</div>
-        <?php if (count($cart_items) > 0) { ?>
-            <?php foreach ($cart_items as $item) { ?>
-                <div class="cart-item">
-                    <img src="<?php echo $item["thumbnail_image"]; ?>" alt="<?php echo $item["title"]; ?>">
-                        <div class="cart-item-details">
-                        <div class="item-title"><?php echo $item["title"]; ?></div>
-                        <div class="item-price">$<?php echo $item["price_list"]; ?></div>
-                        <div class="item-quantity">
-                            <label for="quantity-<?php echo $item["cart_id"]; ?>">Quantity:</label>
-                            <input type="range" id="quantity-<?php echo $item["cart_id"]; ?>" name="quantity" min="1" max="10" value="<?php echo $item["quantity"]; ?>">
-                            <span class="quantity-value"><?php echo $item["quantity"]; ?></span>
-                        </div>
-                        <a href="remove_from_cart.php?cart_id=<?php echo $item["cart_id"]; ?>" class="remove-button">Remove</a>
-                    </div> 
-                </div>
-            <?php } ?>
-
-                    <button id="confirm-button">Confirm Changes</button>
-
-                </div>
-            <div class="totals">
-                <div class="total-price">Cart Total: $<span id="cart-total">$<?php echo $item["price_list"]; ?></span></div>
-                <div class="total-mrp">MRP Total: ₹<span id="mrp-total"><?php echo $mrp_total; ?></span></div>
-                <div class="savings">You Saved: ₹<span id="savings"><?php echo $savings; ?></span> (<span id="savings-percentage"><?php echo round(($savings / $mrp_total) * 100); ?></span>%)</div>
+        <?php include("header.php"); ?>
+    <?php if ($result->num_rows === 0) { ?>
+        <div class="basket-product">Your cart is empty.
+        <a href="shop.php" class="continue-shopping-button">Continue Shopping</a></div>
+    <?php } else { ?>
+  <main class="clearfix">
+            <!-- Display cart items and summary -->
+            <div class="basket">
+            <div class="basket-labels">
+                <ul>
+                    <li class="item item-heading">Item</li>
+                    <li class="price">Price</li>
+                    <li class="quantity">Quantity</li>
+                    <li class="subtotal">Subtotal</li>
+                </ul>
             </div>
-            
-            <a href="checkout.php" class="checkout-button" >Checkout</a>
-        <?php } else { ?>
-            <p>Your cart is empty.</p>
-        <?php } ?>
+            <?php
+            // Fetch cart items for calculating totals
+            $select_sql = "SELECT * FROM shopping_cart WHERE user_id = $user_id";
+            $result = $conn->query($select_sql);
+
+            $totalPrice = 0;
+
+            while ($row = $result->fetch_assoc()) {
+                if (!$row['is_saved_for_later']) {
+                    $totalPrice += $row['total_price'];
+            ?>
+<div class="basket-product">
+    <div class="item">
+                    <?php
+            // Fetch product details based on product_id
+            $product_id = $row['product_id'];
+            $product_sql = "SELECT * FROM wrist_watch_products WHERE product_id = $product_id";
+            $product_result = $conn->query($product_sql);
+            if ($product_result->num_rows > 0) {
+                $product = $product_result->fetch_assoc();
+            ?>
+
+        <div class="product-image">
+            <img src="<?php echo $product["thumbnail_image"]; ?>" alt="<?php echo $product["title"]; ?>" class="product-frame">
+        </div>
+        <div class="product-details">
+
+            <h1><strong><span class="item-quantity"><?php echo $row['quantity']; ?></span> x <?php echo $product['title']; ?></strong></h1>
+            <p><strong><?php echo $row['color']; ?></strong></p>
+            <p>Product Code - <?php echo $product['product_id']; ?></p>
+                    <div class="shipping-address">
+            Shipping Address: <?php echo $row['location']; ?>
+        </div>
+            <?php
+            }
+            ?>
+        </div>
     </div>
-</div>
+    <div class="price"><?php echo $product['price_list']; ?>
+        <s><?php echo $product['price_mrp']; ?></s>
+    </div>
+    <div class="quantity">
+        <?php echo $row['quantity']; ?> <!-- Display quantity as text -->
+    </div>
+    <div class="subtotal"><?php echo $row['total_price']; ?></div>
+        <div class="remove">
+        <a href="cart.php?action=remove&cart_id=<?php echo $row['cart_id']; ?>" class="glass-button remove-button">
+          <span class="button-icon"><i class="fas fa-trash"></i></span>
+          Remove
+        </a>
+
+        </div></div>
+            <?php
+                    }
+                }
+            ?>
+        </div>
+        <aside>
+            <div class="summary">
+                <div class="summary-total-items"><span class="total-items"></span> Items in your Bag</div>
+                <div class="summary-subtotal">
+                    <div class="subtotal-title">MRP Total</div>
+                    <div class="subtotal-value final-value" id="basket-subtotal"><s><?php echo $totalMRP; ?></s></div>
+                    <div class="subtotal-title">Savings</div>
+                    <div class="subtotal-value final-value" id="basket-subtotal"><?php echo $totalMoneySaved; ?></div>
+                </div>
+                <div class="summary-total">
+                    <div class="total-title">Total</div>
+                    <div class="total-value final-value" id="basket-total"><?php echo $totalPrice; ?></div>
+                </div>
+                <div class="summary-checkout">
+                    <a href="checkout.php" class="checkout-cta">Checkout</a>
+                </div>
+            </div>
+        </aside>
+    </main>
+        <?php } ?>
+            <?php include("footer.php"); ?>
+
 
 </body>
-    <?php include("footer.php"); ?>
-
-<script>
-    const quantityInputs = document.querySelectorAll('input[name="quantity"]');
-    const cartTotalElement = document.getElementById('cart-total');
-    const mrpTotalElement = document.getElementById('mrp-total');
-    const savingsElement = document.getElementById('savings');
-    const savingsPercentageElement = document.getElementById('savings-percentage');
-
-    quantityInputs.forEach(input => {
-        const quantityValue = input.nextElementSibling;
-        const priceElement = input.closest('.cart-item').querySelector('.item-price');
-        const initialPrice = parseFloat(priceElement.textContent.replace('$', ''));
-        const cartTotal = parseFloat(cartTotalElement.textContent.replace('$', ''));
-        const mrpTotal = parseFloat(mrpTotalElement.textContent.replace('₹', ''));
-
-        input.addEventListener('input', function () {
-            const newQuantity = parseInt(this.value);
-            quantityValue.textContent = newQuantity;
-
-            const newPrice = (initialPrice * newQuantity).toFixed(2);
-            priceElement.textContent = '$' + newPrice;
-
-            const priceDifference = parseFloat(newPrice) - (initialPrice * this.value);
-            const newCartTotal = cartTotal + priceDifference;
-            cartTotalElement.textContent = '$' + newCartTotal.toFixed(2);
-
-            const savings = mrpTotal - newCartTotal;
-            savingsElement.textContent = '$' + savings.toFixed(2);
-            savingsPercentageElement.textContent = Math.round((savings / mrpTotal) * 100);
-        });
-    });
-</script>
 </html>
+
+
+
+
