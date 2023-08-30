@@ -4,9 +4,213 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Signup</title>
-  <link rel="stylesheet" href="http://localhost/smartwatch/res/css/signup.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style type="text/css">
+  body{
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans', sans-serif;
+  overflow: hidden; /* Prevent horizontal scrollbar due to animation */
+  position: relative;
+  background: url('res/depth_1.png') no-repeat center center fixed;
+  background-size: cover;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #3458a300, #00bcd482, #8bc34a94, #ffcc2959);
+}
+#parallax {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-image: url(res/depth_3.png), url(res/depth_2.png), url(res/depth_1.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-position: 50% 50%;
+}
+.animation-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.animate-gradient {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #F8BD00, #1877F2);
+  opacity: 0.2;
+  animation: floatAnimation 10s infinite linear;
+}
+
+@keyframes floatAnimation {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(50px, 50px);
+  }
+}
+
+
+.signup-box {
+    background: linear-gradient(116deg, #f8bd00ab, #00bcd494);
+    backdrop-filter: blur(10px);
+    padding: 46px;
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    max-width: 425px;
+    width: 100%;
+    box-shadow: inset 1px 1px 18px 7px #0000006e;
+    padding-left: 45px;
+    padding-right: 73px;
+}
+
+h1 {
+  color: #fff;
+}
+
+form input {
+    backdrop-filter: opacity(17.5);
+    border-color: #faebd78c;
+    border-width: 1px;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgb(255 255 255 / 23%);
+    color: #fff;
+}
+
+form button {
+    border-radius: 10px;
+    width: 105%;
+    padding: 12px;
+    background-color: #ffcc29;
+    border: none;
+    border-radius: 11px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #f2b700;
+}
+
+p {
+  margin-top: 20px;
+  color: #fff;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.password-toggle:hover {
+  color: #333;
+}
+
+
+.error {
+  color: red;
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+.password-indicators {
+  display: none;
+    flex-direction: column;
+    margin-top: 15px;
+    box-shadow: 0px 2px 11px 1px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff1f;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.indicator {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.indicator::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background-color: transparent;
+  font-size: 16px; /* Adjust the font size as needed */
+  text-align: center;
+  line-height: 20px;
+  box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.indicator.passed::before {
+  background-color: green;
+  box-shadow: inset 0px 0px 5px rgba(0, 255, 0, 0.4);
+  content: '\f00c'; /* Font Awesome check icon */
+  font-family: “Font Awesome 5 Free“; 
+  font-weight: 900; 
+  color: white;
+}
+
+.indicator.failed::before {
+  background-color: red;
+  content: '\f00d'; /* Font Awesome times icon */
+  font-family: “Font Awesome 5 Free“; 
+  font-weight: 900; 
+  color: white;
+}
+
+/* Add a smooth transition for the glowing effect */
+.indicator:hover::before {
+  transform: scale(1.2);
+  box-shadow: inset 0px 0px 10px rgba(255, 0, 0, 0.7);
+}
+</style>
+
 </head>
 <body>
+    <div class="animation-container">
+    <div class="animate-gradient"></div>
+  </div>
+<div id="parallax">
   <div class="container">
     <div class="signup-box">
       <h1>Signup</h1>
@@ -20,31 +224,79 @@
         <input type="email" name="email" placeholder="Email" required>
         <p class="error" id="error-email"></p>
         
-        <input type="password" name="password" id="password" placeholder="Password" autocomplete="new-password" required>
-          <span class="password-toggle" id="password-toggle"></span>
+          <div class="password-input-container">
+            <input type="password" name="password" id="password" placeholder="Password" autocomplete="new-password" required data-visible="false">
+          <div class="password-toggle" id="password-toggle" onclick="togglePasswordVisibility('password')"><i class="fas fa-eye"></i></div>
+          </div>
+
           <p class="error" id="error-password"></p>
           <div class="password-indicators" id="password-indicators">
             <div class="indicator" id="indicator-lowercase">Atleast One Lower Case Character</div>
             <div class="indicator" id="indicator-uppercase">Atleast One Upper Case Character</div>
             <div class="indicator" id="indicator-number">At least one Number
-</div>
+            </div>
             <div class="indicator" id="indicator-special">At least one special character
-</div>
-            <div class="indicator" id="indicator-length">At least 8 character
+            </div>
+            <div class="indicator" id="indicator-length">*At least 8 character
 
-</div>
+          </div>
           </div>
 
-          <input type="password" name="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" required>
-          <span class="password-toggle" id="confirmPassword-toggle"></span>
+        <div class="password-input-container">
+        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" required>
+        <div class="password-toggle" id="confirmPassword-toggle" onclick="toggleConfirmPasswordVisibility('confirmPassword')"><i class="fas fa-eye"></i></div>
+          </div>
           <p class="error" id="error-confirmPassword"></p>
 
         
-        <button id="signupButton" type="submit">Signup</button>
+        <button id='signupButton' type="submit">Signup</button>
       </form>
       <p>Already have an account? <a href="login.html">Login</a></p>
     </div>
   </div>
+</div>
+<script>
+function togglePasswordVisibility(inputId) {
+  const passwordInput = document.getElementById(inputId);
+  const passwordToggle = document.getElementById(inputId + '-toggle');
+  
+  console.log(`Before toggling: ${inputId} visibility is ${passwordInput.type}`);
+  
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    passwordInput.dataset.visible = 'true';
+    passwordToggle.classList.add('active');
+    console.log(`Toggled ${inputId} to visible`);
+  } else {
+    passwordInput.type = 'password';
+    passwordInput.dataset.visible = 'false';
+    passwordToggle.classList.remove('active');
+    console.log(`Toggled ${inputId} to hidden`);
+  }
+  
+  console.log(`After toggling: ${inputId} visibility is ${passwordInput.type}`);
+}
+function toggleConfirmPasswordVisibility(inputId) {
+  const passwordInput = document.getElementById(inputId);
+  const passwordToggle = document.getElementById(inputId + '-toggle');
+  
+  console.log(`Before toggling: ${inputId} visibility is ${passwordInput.type}`);
+  
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    passwordInput.dataset.visible = 'true';
+    passwordToggle.classList.add('active');
+    console.log(`Toggled ${inputId} to visible`);
+  } else {
+    passwordInput.type = 'password';
+    passwordInput.dataset.visible = 'false';
+    passwordToggle.classList.remove('active');
+    console.log(`Toggled ${inputId} to hidden`);
+  }
+  
+  console.log(`After toggling: ${inputId} visibility is ${passwordInput.type}`);
+}
+  </script>
   <script src="res/js/validation.js"></script>
 </body>
 </html>
